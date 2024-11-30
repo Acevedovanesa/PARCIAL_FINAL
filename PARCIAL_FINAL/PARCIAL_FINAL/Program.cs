@@ -10,7 +10,7 @@ internal class Program
 
         // Crear y llenar la matriz con números aleatorios
         int[,] Matriz = GenerarMatriz(N, M);
-        Random random = new Random();
+        
 
         int X = 0, Y = 0;
         int Acumulado = 0;
@@ -42,10 +42,88 @@ internal class Program
         MostrarMatriz(Matriz, -1, -1, Acumulado);
     }
 
-    private static int[,] GenerarMatriz(int n, int m)
+    private static (int X, int Y, int Acumulado) MoverJugador(ConsoleKey tecla, int x, int y, int[,] matriz, int acumulado)
     {
-        throw new NotImplementedException();
+        
+        {
+            int PosX = x, PosY = y;
+
+            switch (tecla)
+            {
+                case ConsoleKey.UpArrow:    // Arriba
+                    PosX = Math.Max(0, x - 1);
+                    break;
+                case ConsoleKey.DownArrow: // Abajo
+                    PosX = Math.Min(matriz.GetLength(0) - 1, x + 1);
+                    break;
+                case ConsoleKey.LeftArrow: // Izquierda
+                    PosY = Math.Max(0, y - 1);
+                    break;
+                case ConsoleKey.RightArrow: // Derecha
+                    PosY = Math.Min(matriz.GetLength(1) - 1, y + 1);
+                    break;
+            }
+
+            // Si se mueve, acumular y marcar como visitado
+            if (PosX != x || PosY != y)
+            {
+                acumulado += matriz[PosX,PosY];
+                matriz[PosX, PosY] = 0; // Marcar celda como visitada
+            }
+
+            return (PosX, PosY, acumulado);
+        }
     }
-}
+
+    static int[,] GenerarMatriz(int F, int C)
+    {
+        {
+            int[,] matriz = new int[F, C];
+            Random random = new Random();
+            for (int i = 0; i < F; i++)
+            {
+                for (int j = 0; j < C; j++)
+                {
+                    matriz[i, j] = random.Next (0, 10); // Números entre 0 y 9
+                }
+            }
+            matriz[0, 0] = 0; // Posición inicial en 0
+            return matriz;
+        }
+    }
+
+    private static void MostrarMatriz(int[,] matriz, int JugaX, int JugaY, int Acumulado)
+    {
+        {
+            for (int i = 0; i < matriz.GetLength(0); i++)
+            {
+                for (int j = 0; j < matriz.GetLength(1); j++)
+                {
+                    if (i == JugaX && j == JugaY)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write(" 0 "); // Representar jugador
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.Write($" {matriz[i, j]:D1} ");
+                    }
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine($"Suma acumulada: {Acumulado}");
+        }
+    }
+
+       
+
+        }
+    
+
+
+
+
+
    
 
