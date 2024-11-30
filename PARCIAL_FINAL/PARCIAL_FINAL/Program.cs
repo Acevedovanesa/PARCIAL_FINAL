@@ -68,7 +68,7 @@ internal class Program
             if (PosX != x || PosY != y)
             {
                 acumulado += matriz[PosX,PosY];
-                matriz[PosX, PosY] = 0; // Marcar celda como visitada
+                matriz[PosX, PosY] = 0;// Marcar celda como visitada
             }
 
             return (PosX, PosY, acumulado);
